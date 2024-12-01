@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/', // Halaman awal yang akan ditampilkan
         routes: {
-          '/': (context) => LoginScreen(), // Halaman Login
+          '/': (context) => LoginApp(), // Halaman Login
           '/register': (context) => RegisterScreen(), // Halaman Register
           '/home': (context) => HomeScreen(), // Halaman Home
         },
