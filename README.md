@@ -73,4 +73,4 @@
 ---
 ## **Deployment**
 Tautan aplikasi akan diperbarui setelah rilis:
-[Tautan Deployment Aplikasi Batikin]
+[Tautan Deployment Aplikasi Hasbogor]
