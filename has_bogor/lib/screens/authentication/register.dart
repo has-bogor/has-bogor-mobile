@@ -1,117 +1,82 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'login.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterPageState extends State<RegisterPage> {
   final _usernameController = TextEditingController();
-  final _passwordController1 = TextEditingController();
-  final _passwordController2 = TextEditingController();
-  final _formKey = GlobalKey<FormState>(); // Form key untuk validasi form
-  String _errorMessage = '';
-
-  // Fungsi untuk menangani registrasi
-  void _register() {
-    if (_formKey.currentState!.validate()) {
-      // Jika form valid, lanjutkan registrasi
-      String username = _usernameController.text;
-      String password1 = _passwordController1.text;
-      String password2 = _passwordController2.text;
-
-      if (password1 != password2) {
-        setState(() {
-          _errorMessage = 'Passwords do not match';
-        });
-      } else {
-        setState(() {
-          _errorMessage = '';
-        });
-        // Simulasi proses registrasi
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Registration Successful'),
-              content: Text('Welcome, $username! Your account has been created.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/'); // Arahkan ke login screen setelah registrasi
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } else {
-      setState(() {
-        _errorMessage = 'Please fill all fields correctly.';
-      });
-    }
-  }
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create an Account'),
-        backgroundColor: Colors.black,
+        title: const Text('Register'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        backgroundColor: Colors.indigo[900], // Ganti warna AppBar
       ),
       body: Center(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey, // Gunakan key untuk validasi form
+          child: Card(
+            elevation: 8,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Logo Image (placeholder untuk logo)
-                  Center(
-                    child: Image.asset(
-                      'assets/images/logo.png', // Pastikan kamu memiliki logo di folder assets
-                      height: 50,
-                      width: 50,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const Text(
+                    'Register',
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Create an Account',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20),
-
-                  // Error Message
-                  if (_errorMessage.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        _errorMessage,
-                        style: TextStyle(color: Colors.red, fontSize: 14),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  // Username Field
+                  const SizedBox(height: 30.0),
                   TextFormField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                      hintText: 'Username',
-                      hintStyle: TextStyle(color: Colors.white),
+                      labelText: 'Username',
+                      hintText: 'username',
+                      hintStyle: const TextStyle(color: Colors.white),
                       filled: true,
-                      fillColor: Colors.grey[800],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+                      fillColor: Colors.blueGrey[800], // Menambahkan warna latar belakang
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey border
                       ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey focused border
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey enabled border
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(
+                      color: Colors.white, // Menambahkan teks warna putih
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your username';
@@ -119,23 +84,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16),
-
-                  // Password Field 1
+                  const SizedBox(height: 12.0),
                   TextFormField(
-                    controller: _passwordController1,
-                    obscureText: true,
+                    controller: _passwordController,
                     decoration: InputDecoration(
+                      labelText: 'Password',
                       hintText: 'Password',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       filled: true,
-                      fillColor: Colors.grey[800],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+                      fillColor: Colors.blueGrey[800], // Menambahkan warna latar belakang
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey border
                       ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey focused border
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey enabled border
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    obscureText: true,
+                    style: const TextStyle(
+                      color: Colors.white, // Menambahkan teks warna putih
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
@@ -143,62 +119,116 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 16),
-
-                  // Password Field 2 (Confirm Password)
+                  const SizedBox(height: 12.0),
                   TextFormField(
-                    controller: _passwordController2,
-                    obscureText: true,
+                    controller: _confirmPasswordController,
                     decoration: InputDecoration(
+                      labelText: 'Confirm Password',
                       hintText: 'Confirm Password',
-                      hintStyle: TextStyle(color: Colors.white),
                       filled: true,
-                      fillColor: Colors.grey[800],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+                      hintStyle: const TextStyle(color: Colors.white),
+                      fillColor: Colors.blueGrey[800], // Menambahkan warna latar belakang
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey border
                       ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey focused border
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                        borderSide: BorderSide(color: Colors.blueGrey), // BlueGrey enabled border
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    obscureText: true,
+                    style: const TextStyle(
+                      color: Colors.white, // Menambahkan teks warna putih
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please confirm your password';
                       }
-                      if (value != _passwordController1.text) {
-                        return 'Passwords do not match';
-                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 24.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      String username = _usernameController.text;
+                      String password1 = _passwordController.text;
+                      String password2 = _confirmPasswordController.text;
 
-                  // Tombol Register di tengah
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _register,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue[600],
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),
-                      child: Text('Register', style: TextStyle(fontSize: 18)),
+                      // Cek kredensial
+                      final response = await request.postJson(
+                          "http://127.0.0.1:8000/authentication/api/register/",
+                          jsonEncode({
+                            "username": username,
+                            "password1": password1,
+                            "password2": password2,
+                          }));
+
+                      if (context.mounted) {
+                        // Check if registration is successful
+                        if (response['status'] == 'success') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Successfully registered!'),
+                            ),
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          );
+                        } else if (response['error'] == 'username already exists') {
+                          // Handle case where username is already taken
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Username already exists. Please log in.'),
+                            ),
+                          );
+                          // Optionally, navigate to login page if the user wants to log in
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Failed to register!'),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 50),
+                      backgroundColor: Colors.indigo[900], // Tombol dengan warna biru
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                     ),
+                    child: const Text('Register'),
                   ),
-                  SizedBox(height: 20),
-
-                  // Already have an account? Link to login
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Already have an account? ', style: TextStyle(color: Colors.grey)),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/');
-                          },
-                          child: Text('Login', style: TextStyle(color: Colors.blue[600])),
-                        ),
-                      ],
+                  const SizedBox(height: 16.0),
+                  // Opsi login jika sudah punya akun
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
+                    },
+                    child: const Text(
+                      'Have an account? Login',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16.0,
+                      ),
                     ),
                   ),
                 ],

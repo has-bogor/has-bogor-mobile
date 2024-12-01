@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CreatePaymentPage extends StatefulWidget {
   final Map<String, dynamic> product;  // Mengambil data produk
 
-  CreatePaymentPage({Key? key, required this.product}) : super(key: key);
+  const CreatePaymentPage({Key? key, required this.product}) : super(key: key);
 
   @override
   _CreatePaymentPageState createState() => _CreatePaymentPageState();

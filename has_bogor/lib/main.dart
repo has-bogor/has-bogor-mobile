@@ -25,13 +25,13 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.indigo,
-          ).copyWith(secondary: Color.fromARGB(255, 36, 37, 66)),
+          ).copyWith(secondary: const Color.fromARGB(255, 36, 37, 66)),
         ),
         initialRoute: '/', // Halaman awal yang akan ditampilkan
         routes: {
-          '/': (context) => LoginApp(), // Halaman Login
-          '/register': (context) => RegisterScreen(), // Halaman Register
-          '/home': (context) => HomeScreen(), // Halaman Home
+          '/': (context) => const LoginApp(), // Halaman Login
+          '/register': (context) => const RegisterPage(), // Halaman Register
+          '/home': (context) =>  HomeScreen(), // Halaman Home
         },
         debugShowCheckedModeBanner: false,
       ),
