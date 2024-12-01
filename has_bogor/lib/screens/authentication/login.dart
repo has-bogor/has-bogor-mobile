@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Untuk menyambungkan Android emulator dengan Django pada localhost,
                       // gunakan URL http://10.0.2.2/
                       final response = await request
-                          .login("http://127.0.0.1:8000/authentication/login/", {
+                          .login("http://127.0.0.1:8000/api/login/", {
                         'username': username,
                         'password': password,
                       });
