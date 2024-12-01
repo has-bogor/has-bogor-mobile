@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:has_bogor/screens/authentication/guestpage.dart';
 import 'package:provider/provider.dart';
 import 'package:has_bogor/screens/authentication/login.dart';
 import 'package:has_bogor/screens/authentication/home.dart';
@@ -29,9 +30,10 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/', // Halaman awal yang akan ditampilkan
         routes: {
-          '/': (context) => const LoginApp(), // Halaman Login
+          '/': (context) => const WelcomePage(), // Halaman Login
+          '/login': (context) => const LoginApp(), // Halaman Login
           '/register': (context) => const RegisterPage(), // Halaman Register
-          '/home': (context) =>  HomeScreen(), // Halaman Home
+          '/home': (context) =>  const HomeScreen(), // Halaman Home
         },
         debugShowCheckedModeBanner: false,
       ),
