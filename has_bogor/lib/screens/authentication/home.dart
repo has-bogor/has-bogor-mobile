@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:has_bogor/widgets/left_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +41,10 @@ class _HomePageState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home'),
         backgroundColor: Colors.indigo[500], // Ganti dengan indigo[500]
+
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+      drawer: const LeftDrawer(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,6 +124,7 @@ class _HomePageState extends State<HomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       // Add navigation for promo page
+
                     },
                     child: Text("Lihat Promo"),
                     style: ElevatedButton.styleFrom(
