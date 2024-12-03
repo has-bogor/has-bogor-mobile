@@ -1,241 +1,282 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:has_bogor/widgets/left_drawer.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  final String userName = "Bogorlovers";
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+  // Tambahkan GlobalKey untuk mengontrol Drawer
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class _HomePageState extends State<HomeScreen> {
-  late List<dynamic> katalogItems;
-
-  @override
-  void initState() {
-    super.initState();
-    katalogItems = [];
-    fetchKatalogItems();
-  }
-
-  // Fungsi untuk mengambil data produk dari backend
-  Future<void> fetchKatalogItems() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/products/');
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      var data = json.decode(response.body);
-      setState(() {
-        katalogItems = data;  // Menyimpan data produk ke dalam katalogItems
-      });
-    } else {
-      throw Exception('Failed to load katalog items');
-    }
-  }
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        backgroundColor: Colors.indigo[500], // Ganti dengan indigo[500]
-
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      drawer: const LeftDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Hero Section
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-              child: Column(
-                children: [
-                  Text(
-                    "Welcome to Has Bogor!",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.indigo[500], // Ganti dengan indigo[500]
-                      fontFamily: 'DM Sans',
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Hello, bogorlovers! You are logged in.",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.blueGrey[800],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Temukan berbagai produk menarik yang kami tawarkan. Nikmati pengalaman berbelanja dengan penawaran spesial setiap hari!",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.blueGrey,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+      key: _scaffoldKey, // Tambahkan key pada Scaffold
+      //todo: gradient background
+      backgroundColor: Colors.transparent, // Menghilangkan warna background default
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff1D1E3C), Color(0xff004F8C)],  // Gradien yang diinginkan
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            const Divider(color: Colors.white, thickness: 1),
-            
-            // Promo Section
-            Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.indigo[500]!, Colors.indigo[400]!], // Ganti dengan indigo shades
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent, // Transparent untuk gradien
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.menu, color: Colors.white),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer(); // Gunakan key untuk membuka drawer
+              },
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey[300],
+                  child: const Icon(Icons.person, color: Colors.black),
                 ),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
               ),
-              child: Column(
+            ],
+          ),
+        ),
+      ),
+      drawer: const LeftDrawer(),  // Menampilkan LeftDrawer
+      body: SingleChildScrollView(
+        child: Container(
+          // Menggunakan gradien di seluruh background
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff1D1E3C), Color(0xff004F8C)],  // Gradien yang diinginkan
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Welcome Text
+              Text(
+                "Welcome Back, $userName!",
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,  // Text berwarna putih agar terlihat di gradien gelap
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Explore the best products for you",
+                style: TextStyle(fontSize: 16, color: Colors.white70),
+              ),
+              const SizedBox(height: 20),
+
+              // Search Bar
+              TextField(
+                decoration: InputDecoration(
+                  hintText: "Search for products...",
+                  prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Promo Section
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Special Promo!",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            "Enjoy up to 50% off on selected items.",
+                            style: TextStyle(fontSize: 14, color: Colors.black54),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Image.asset(
+                      "assets/images/promo.jpeg", // Gambar promo
+                      height: 80,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Catalog Section
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Promo Spesial!",
+                    "Katalog Produk",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "Dapatkan penawaran menarik setiap hari!",
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                  const SizedBox(height: 16),
-                  Image.asset('assets/images/promo.jpeg', width: double.infinity, height: 200, fit: BoxFit.cover),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {
-                      // Add navigation for promo page
-
+                      // Logika untuk View All
                     },
-                    child: Text("Lihat Promo"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo[900], 
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                    child: const Text(
+                      "View All",
+                      style: TextStyle(color: Colors.blue),
                     ),
                   ),
                 ],
               ),
-            ),
-            const Divider(color: Colors.white, thickness: 1),
 
-            // Katalog Produk Section
-            const Padding(
-              padding:  EdgeInsets.all(16.0),
-              child: Text(
-                "Katalog Produk",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              const SizedBox(height: 10),
+
+              // Product Cards (Scroll horizontally)
+              SizedBox(
+                height: 210, // Tinggi diperbaiki untuk menghindari overflow
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5, // Jumlah produk
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 16),
+                      child: ProductCard(
+                        productName: "Produk ${index + 1}",
+                        price: "Rp ${(index + 1) * 10000}",
+                        imageUrl: "assets/images/slide1.jpg",
+                      ),
+                    );
+                  },
                 ),
               ),
-            ),
-
-            // Grid View untuk menampilkan produk
-            katalogItems.isNotEmpty
-                ? GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    itemCount: katalogItems.length,
-                    itemBuilder: (context, index) {
-                      var item = katalogItems[index];
-                      return ProductCard(item: item);
-                    },
-                  )
-                : const Center(child: CircularProgressIndicator()),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// Widget untuk menampilkan produk
+// Widget: Product Card
 class ProductCard extends StatelessWidget {
-  final dynamic item;
+  final String productName;
+  final String price;
+  final String imageUrl;
 
-  const ProductCard({super.key, required this.item});
+  const ProductCard({
+    Key? key,
+    required this.productName,
+    required this.price,
+    required this.imageUrl,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.grey.shade800,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 4,
+    return Container(
+      width: 140,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: double.infinity,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              image: DecorationImage(
-                image: NetworkImage(item['image'] ?? 'https://via.placeholder.com/150'),
-                fit: BoxFit.cover,
-              ),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+            child: Image.asset(
+              imageUrl,
+              height: 100, // Sesuaikan tinggi gambar
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              item['name'] ?? 'Product Name',
-              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              'Rp ${item['price']}',
-              style: TextStyle(color: Colors.green[400], fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-            child: Text(
-              item['description'] ?? 'No Description',
-              style: const TextStyle(color: Colors.white70, fontSize: 12),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Logic for "Beli Sekarang"
-              },
-              child: Text("Beli Sekarang"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green[500],
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              ),
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  productName,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  price,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Tombol Lihat Detail Produk
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      // Logika untuk lihat detail produk
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Lihat Detail $productName")),
+                      );
+                    },
+                    child: const Text(
+                      "Lihat Detail",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+                // Tombol Keranjang
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    onPressed: () {
+                      // Logika tombol beli
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Beli $productName berhasil!")),
+                      );
+                    },
+                    icon: const Icon(Icons.shopping_cart, color: Colors.green),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
