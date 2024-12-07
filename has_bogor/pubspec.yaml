@@ -1,14 +1,12 @@
 name: has_bogor
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
-
+  sdk: '^3.4.0' 
 flutter:
-  # Semua pengaturan Flutter (assets, uses-material-design) diletakkan di bawah sini
   assets:
     - assets/images/
 
@@ -22,6 +20,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   provider: ^6.1.2
   pbp_django_auth: ^0.3.1
+  animated_text_kit: ^4.2.1 
 
 # Dev dependencies
 dev_dependencies:
