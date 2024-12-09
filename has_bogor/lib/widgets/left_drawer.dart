@@ -71,18 +71,18 @@ class LeftDrawer extends StatelessWidget {
             //   },
             // ),
             //todo:buat ulasan
-            ListTile(
-              leading: const Icon(Icons.rate_review_outlined),
-              title: const Text('Review'),
-              // Bagian redirection ke ReviewScreen
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ReviewScreen(),
-                    ));
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.rate_review_outlined),
+            //   title: const Text('Review'),
+            //   // Bagian redirection ke ReviewScreen
+            //   onTap: () {
+            //     Navigator.pushReplacement(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const ReviewScreen(),
+            //         ));
+            //   },
+            // ),
             //todo:buat promo
             // ListTile(
             //   leading: const Icon(Icons.local_offer_outlined),
