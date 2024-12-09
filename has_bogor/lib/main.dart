@@ -7,6 +7,7 @@ import 'package:has_bogor/screens/authentication/home.dart';
 import 'package:has_bogor/screens/authentication/register.dart'; // Import halaman Register
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart'; // Import PaymentHistoryScreen
+import 'package:has_bogor/screens/penyimpanan/screens/katalog_screen.dart'; // Import Katalog Screen
 
 void main() {
   runApp(const MyApp());
@@ -35,9 +36,10 @@ class MyApp extends StatelessWidget {
           '/': (context) => const WelcomePage(), // Halaman Login
           '/login': (context) => const LoginApp(), // Halaman Login
           '/register': (context) => const RegisterPage(), // Halaman Register
-          '/home': (context) =>    HomeScreen(), // Halaman Home
-          '/payment-history': (context) =>  PaymentHistoryScreen(), // Halaman Payment History
-          '/create-payment': (context) =>  const CreatePaymentScreen(), // Halaman Payment History
+          '/home': (context) => HomeScreen(), // Halaman Home
+          '/payment-history': (context) => PaymentHistoryScreen(), // Halaman Payment History
+          '/create-payment': (context) => const CreatePaymentScreen(), // Halaman Create Payment
+          '/katalog': (context) => const KatalogScreen(), // Katalog Screen Route
         },
         debugShowCheckedModeBanner: false,
       ),
