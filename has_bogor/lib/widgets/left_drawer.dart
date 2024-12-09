@@ -3,6 +3,8 @@ import 'package:has_bogor/screens/authentication/home.dart';
 import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart';
 
 import 'package:has_bogor/screens/authentication/login.dart';
+import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
+import 'package:has_bogor/screens/ulasan/screens/ulasan_form_page.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
