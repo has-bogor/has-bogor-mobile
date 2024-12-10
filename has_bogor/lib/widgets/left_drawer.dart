@@ -5,6 +5,7 @@ import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart';
 import 'package:has_bogor/screens/authentication/login.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
 import 'package:has_bogor/screens/ulasan/screens/ulasan_form_page.dart';
+import 'package:has_bogor/screens/category/screens/category_list_screens.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -109,6 +110,18 @@ class LeftDrawer extends StatelessWidget {
                     ));
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.category),
+              title: const Text('Category'),
+              onTap: () {
+                // Bagian redirection ke LoginScreen
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>  CategoryScreen(),
+                    ));
+              },
+            ),
             //logout
             ListTile(
               leading: const Icon(Icons.logout),
@@ -121,7 +134,7 @@ class LeftDrawer extends StatelessWidget {
                       builder: (context) => const LoginApp(),
                     ));
               },
-            ),
+            ), 
         ],
       ),
     );

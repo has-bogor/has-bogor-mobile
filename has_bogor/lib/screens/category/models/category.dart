@@ -1,3 +1,5 @@
+// models/category.dart
+// lib/models/category.dart
 class Category {
   final int id;
   final String namaCategory;
@@ -18,3 +20,5 @@ class Category {
     };
   }
 }
+
+
