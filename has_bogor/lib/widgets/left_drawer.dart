@@ -5,6 +5,8 @@ import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart';
 import 'package:has_bogor/screens/authentication/login.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
 import 'package:has_bogor/screens/ulasan/screens/ulasan_form_page.dart';
+import 'package:has_bogor/screens/wishlist/screens/product_dummy.dart';
+import 'package:has_bogor/screens/wishlist/screens/wishlist_page.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -57,19 +59,31 @@ class LeftDrawer extends StatelessWidget {
                     ));
               },
             ),
+            ListTile(
+            leading: const Icon(Icons.favorite_border),
+            title: const Text('Wishlist'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WishlistPage(),
+                ),
+              );
+            },
+          ),
             //todo:buat product
-            // ListTile(
-            //   leading: const Icon(Icons.shopping_cart_outlined),
-            //   title: const Text('Product'),
-            //   // Bagian redirection ke ProductScreen
-            //   onTap: () {
-            //     Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => const ProductScreen(),
-            //         ));
-            //   },
-            // ),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart_outlined),
+              title: const Text('Product'),
+              // Bagian redirection ke ProductScreen
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductPage(),
+                    ));
+              },
+            ),
             //todo:buat ulasan
             // ListTile(
             //   leading: const Icon(Icons.rate_review_outlined),
@@ -118,7 +132,7 @@ class LeftDrawer extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const LoginApp(),
+                      builder: (context) => const LoginPage(),
                     ));
               },
             ),

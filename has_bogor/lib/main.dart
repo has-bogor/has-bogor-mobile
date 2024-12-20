@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/', // Halaman awal yang akan ditampilkan
         routes: {
           '/': (context) => const WelcomePage(), // Halaman Login
-          '/login': (context) => const LoginApp(), // Halaman Login
+          '/login': (context) => const LoginPage(), // Halaman Login
           '/register': (context) => const RegisterPage(), // Halaman Register
           '/home': (context) =>    HomeScreen(), // Halaman Home
           '/payment-history': (context) =>  PaymentHistoryScreen(), // Halaman Payment History

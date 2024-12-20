@@ -21,6 +21,7 @@ dependencies:
   provider: ^6.1.2
   pbp_django_auth: ^0.3.1
   animated_text_kit: ^4.2.1 
+  intl: ^0.18.0
 
 # Dev dependencies
 dev_dependencies:
