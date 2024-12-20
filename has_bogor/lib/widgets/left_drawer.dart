@@ -6,6 +6,8 @@ import 'package:has_bogor/screens/authentication/login.dart';
 import 'package:has_bogor/screens/wishlist/screens/wishlist_page.dart';
 import 'package:has_bogor/screens/category/screens/category_list_screens.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
+import 'package:has_bogor/screens/penyimpanan/screens/katalog_screen.dart';
+
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -72,18 +74,31 @@ class LeftDrawer extends StatelessWidget {
             },
           ),
             //todo:buat product
-            // ListTile(
-            //   leading: const Icon(Icons.shopping_cart_outlined),
-            //   title: const Text('Product'),
-            //   // Bagian redirection ke ProductScreen
-            //   onTap: () {
-            //     Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => ProductPage(),
-            //         ));
-            //   },
-            // ),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart_outlined),
+              title: const Text('Product'),
+              // Bagian redirection ke ProductScreen
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductPage(),
+                    ));
+              },
+            ),
+            // todo:buat product
+            ListTile(
+              leading: const Icon(Icons.shopping_cart_outlined),
+              title: const Text('Product'),
+              // Bagian redirection ke ProductScreen
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const KatalogScreen(),
+                    ));
+              },
+            ),
             //todo:buat ulasan
             ListTile(
               leading: const Icon(Icons.rate_review_outlined),
