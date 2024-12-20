@@ -118,7 +118,7 @@ class _PromoFormScreenState extends State<PromoFormScreen> {
       if (widget.promo == null) {
         // Create new promo
         final response = await request.postJson(
-          "http://localhost:8000/promo/create-promo-flutter/",
+          "http://127.0.0.1:8000/promo/create-promo-flutter/",
           jsonEncode(<String, String>{
             'kode': promo.kode.toString(),
             'potongan': promo.potongan.toString(),
@@ -145,7 +145,7 @@ class _PromoFormScreenState extends State<PromoFormScreen> {
       } else {
         // Edit existing promo
         final response = await request.postJson(
-          "http://localhost:8000/promo/edit-promo-flutter/${widget.promo!.id}/",
+          "http://127.0.0.1:8000/promo/edit-promo-flutter/${widget.promo!.id}/",
           jsonEncode(<String, String>{
             'kode': promo.kode.toString(),
             'potongan': promo.potongan.toString(),

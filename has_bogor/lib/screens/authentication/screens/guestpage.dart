@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart'; // Impor dari animated_text_kit
-import 'package:has_bogor/screens/authentication/login.dart';
-import 'package:has_bogor/screens/authentication/register.dart';
+import 'package:has_bogor/screens/authentication/screens/login.dart';
+import 'package:has_bogor/screens/authentication/screens/register.dart';
 
 void main() {
   runApp(const WelcomePage());

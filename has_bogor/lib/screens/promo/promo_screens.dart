@@ -27,8 +27,8 @@ class _PromoScreenState extends State<PromoScreen> {
     final request = context.read<CookieRequest>();
     try {
       final String endpoint = _sortBy == "tanpa_filter" 
-          ? 'http://localhost:8000/promo/show_json' 
-          : 'http://localhost:8000/promo/filtered/?sort_by=$_sortBy';
+          ? 'http://127.0.0.1:8000/promo/show_json' 
+          : 'http://127.0.0.1:8000/promo/filtered/?sort_by=$_sortBy';
           
       final response = await request.get(endpoint);
 
@@ -136,7 +136,7 @@ class _PromoScreenState extends State<PromoScreen> {
     final request = context.read<CookieRequest>();
     try {
       final response = await request.postJson(
-        "http://localhost:8000/promo/delete-flutter/$id/",
+        "http://127.0.0.1:8000/promo/delete-flutter/$id/",
         jsonEncode(<String, dynamic>{}),  // Empty JSON object
       );
 
@@ -208,7 +208,7 @@ class _PromoScreenState extends State<PromoScreen> {
       final request = context.read<CookieRequest>();
       try {
         final response = await request.postJson(
-          "http://localhost:8000/promo/add-store-flutter/$promoId/",
+          "http://127.0.0.1:8000/promo/add-store-flutter/$promoId/",
           jsonEncode({
             'nama': {'name': _namaController.text},  // Sesuaikan format JSON
           }),
@@ -261,7 +261,7 @@ Future<void> _removeStore(BuildContext context, String promoId, String storeName
       final request = context.read<CookieRequest>();
       try {
         final response = await request.postJson(
-          "http://localhost:8000/promo/remove-store-flutter/$promoId/",
+          "http://127.0.0.1:8000/promo/remove-store-flutter/$promoId/",
           jsonEncode({'storeName': storeName}),
         );
 

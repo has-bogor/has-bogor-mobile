@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:has_bogor/screens/authentication/home.dart';
+import 'package:has_bogor/screens/authentication/screens/home.dart';
 import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart';
 
-import 'package:has_bogor/screens/authentication/login.dart';
+import 'package:has_bogor/screens/authentication/screens/login.dart';
 import 'package:has_bogor/screens/wishlist/screens/wishlist_page.dart';
 import 'package:has_bogor/screens/category/screens/category_list_screens.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
