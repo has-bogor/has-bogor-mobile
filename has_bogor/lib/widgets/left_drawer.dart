@@ -7,6 +7,7 @@ import 'package:has_bogor/screens/wishlist/screens/wishlist_page.dart';
 import 'package:has_bogor/screens/category/screens/category_list_screens.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
 import 'package:has_bogor/screens/penyimpanan/screens/katalog_screen.dart';
+import 'package:has_bogor/screens/promo/promo_screens.dart';
 
 
 class LeftDrawer extends StatelessWidget {
@@ -113,18 +114,18 @@ class LeftDrawer extends StatelessWidget {
               },
             ),
             //todo:buat promo
-            // ListTile(
-            //   leading: const Icon(Icons.local_offer_outlined),
-            //   title: const Text('Promo'),
-            //   // Bagian redirection ke PromoScreen
-            //   onTap: () {
-            //     Navigator.pushReplacement(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => const PromoScreen(),
-            //         ));
-            //   },
-            // ),
+            ListTile(
+              leading: const Icon(Icons.local_offer_outlined),
+              title: const Text('Promo'),
+              // Bagian redirection ke PromoScreen
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PromoScreen(),
+                    ));
+              },
+            ),
             //buat history pembayaran
             ListTile(
               leading: const Icon(Icons.payment_outlined),
