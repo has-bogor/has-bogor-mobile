@@ -4,17 +4,25 @@ import '../models/katalog_model.dart';
 
 class ApiService {
   // Localhost base URL
-  final String baseUrl = "http://127.0.0.1:8000";
+  final String baseUrl = "http://127.0.0.1:8000/penyimpanan";
 
   // Fetch all items
   Future<List<Katalog>> fetchKatalogItems() async {
-    final response = await http.get(Uri.parse("$baseUrl/api/katalog/"));
+    try {
+      final response = await http.get(Uri.parse("$baseUrl/api/katalog/"));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.map((item) => Katalog.fromJson(item)).toList();
-    } else {
-      throw Exception("Failed to load items");
+      print("Response status code: ${response.statusCode}");
+      print("Response body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        return data.map((item) => Katalog.fromJson(item)).toList();
+      } else {
+        throw Exception("Failed to load items: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
+      throw e;
     }
   }
 
@@ -31,13 +39,25 @@ class ApiService {
 
   // Add a new item
   Future<void> addItem(Katalog item) async {
+    print(item);
+    print(item.nama);
+    print(item.harga);
+    print(item.kategori);
+    print(item.deskripsi);
+    print(item.toko);
     final response = await http.post(
-      Uri.parse("$baseUrl/add_item/"),
+      Uri.parse("$baseUrl/api/add/"),
       headers: {"Content-Type": "application/json"},
-      body: json.encode(item.toJson()),
+      body: json.encode({
+        "nama": item.nama,
+        "harga": item.harga,
+        "kategori": item.kategori,
+        "deskripsi": item.deskripsi,
+        "toko": item.toko,
+      }),
     );
 
-    if (response.statusCode != 302) { // Django redirects after successful POST
+    if (response.statusCode != 201) { // Django redirects after successful POST
       throw Exception("Failed to add item");
     }
   }
