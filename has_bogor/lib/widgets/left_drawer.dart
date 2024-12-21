@@ -80,7 +80,7 @@ class LeftDrawer extends StatelessWidget {
               title: const Text('Product'),
               // Bagian redirection ke ProductScreen
               onTap: () {
-                Navigator.pushReplacement(
+                Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const KatalogScreen(),

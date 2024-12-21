@@ -7,7 +7,8 @@ import 'package:has_bogor/screens/promo/promo_screens.dart';
 import 'package:has_bogor/screens/ulasan/screens/show_ulasan_page.dart';
 import 'package:has_bogor/screens/wishlist/screens/wishlist_page.dart';
 import 'package:has_bogor/screens/pembayaran/screens/create_payment.dart';
-import '../models/katalogs.dart';
+import '../../penyimpanan/models/katalog_model.dart';
+import '../../penyimpanan/services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,34 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ApiService apiService = ApiService();
   final String userName = "Bogorlovers";
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _currentIndex = 0;
 
   Future<List<Katalog>> fetchKatalog() async {
     try {
-      // Ubah URL untuk emulator Android
-      const String apiUrl = "http://127.0.0.1:8000/authentication/api/katalog/";
-      
-      final response = await http.get(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      );
-
-      print('Status response: ${response.statusCode}');
-      print('Isi response: ${response.body}');
-
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
-        return data.map((item) => Katalog.fromJson(item)).toList();
-      } else {
-        throw Exception('Server mengembalikan status code ${response.statusCode}');
-      }
+      final items = await apiService.fetchKatalogItems();
+      return items;
     } catch (e) {
-      print('Error saat mengambil katalog: $e');
-      throw Exception('Gagal memuat katalog: $e');
+      throw Exception('Error fetching data: $e');
     }
   }
 

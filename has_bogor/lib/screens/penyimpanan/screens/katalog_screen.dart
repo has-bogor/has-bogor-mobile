@@ -65,7 +65,7 @@ class _KatalogScreenState extends State<KatalogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Katalog Items"),
+        title: Text("Katalog Item"),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -85,7 +85,14 @@ class _KatalogScreenState extends State<KatalogScreen> {
                       margin: EdgeInsets.all(8.0),
                       child: ListTile(
                         title: Text(item.nama),
-                        subtitle: Text("Rp ${item.harga.toStringAsFixed(0)} - ${item.toko}"),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Rp ${item.harga.toStringAsFixed(0)}"),
+                            Text(item.toko),
+                            Text(item.deskripsi), // Add more information as needed
+                          ],
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

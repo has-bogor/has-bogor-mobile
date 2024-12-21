@@ -39,12 +39,6 @@ class ApiService {
 
   // Add a new item
   Future<void> addItem(Katalog item) async {
-    print(item);
-    print(item.nama);
-    print(item.harga);
-    print(item.kategori);
-    print(item.deskripsi);
-    print(item.toko);
     final response = await http.post(
       Uri.parse("$baseUrl/api/add/"),
       headers: {"Content-Type": "application/json"},
@@ -65,9 +59,16 @@ class ApiService {
   // Update an item
   Future<void> updateItem(int id, Katalog item) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/items/$id/update/"),
+      Uri.parse("$baseUrl/api/items/$id/update/"),
       headers: {"Content-Type": "application/json"},
-      body: json.encode(item.toJson()),
+      body: json.encode({
+        "id": id,
+        "nama": item.nama,
+        "harga": item.harga,
+        "kategori": item.kategori,
+        "deskripsi": item.deskripsi,
+        "toko": item.toko,
+      }),
     );
 
     if (response.statusCode != 200) {
@@ -77,9 +78,9 @@ class ApiService {
 
   // Delete an item
   Future<void> deleteItem(int id) async {
-    final response = await http.post(Uri.parse("$baseUrl/delete_item/$id/"));
+    final response = await http.post(Uri.parse("$baseUrl/api/items/$id/delete/"));
 
-    if (response.statusCode != 302) { // Django redirects after successful POST
+    if (response.statusCode != 200) { // Django redirects after successful POST
       throw Exception("Failed to delete item");
     }
   }

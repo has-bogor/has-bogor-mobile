@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:has_bogor/screens/pembayaran/screens/update_payment.dart';
 import 'package:has_bogor/screens/pembayaran/widgets/payment_form.dart';
 import 'package:has_bogor/screens/pembayaran/widgets/payment_method_dropdown.dart';
-import 'package:has_bogor/screens/authentication/models/katalogs.dart'; 
+import 'package:has_bogor/screens/penyimpanan/models/katalog_model.dart'; 
 
 class CreatePaymentScreen extends StatefulWidget {
   final Katalog katalog; // Tambah parameter katalog
@@ -26,7 +26,7 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
   void initState() {
     super.initState();
     // Inisialisasi total amount saat screen dibuka
-    updateTotalAmount(double.parse(widget.katalog.harga));
+    updateTotalAmount(widget.katalog.harga);
   }
 
   // Update total amount based on quantity and unit price
@@ -38,7 +38,7 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double unitPrice = double.parse(widget.katalog.harga); // Menggunakan harga dari katalog
+    double unitPrice = widget.katalog.harga; // Menggunakan harga dari katalog
 
     return Scaffold(
       appBar: AppBar(

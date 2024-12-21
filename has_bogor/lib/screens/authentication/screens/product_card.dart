@@ -1,6 +1,6 @@
 // product_card.dart
 import 'package:flutter/material.dart';
-import '../models/katalogs.dart';
+import '../../penyimpanan/models/katalog_model.dart';
 
 class ProductCard extends StatelessWidget {
   final Katalog katalog;

@@ -17,15 +17,15 @@ class Katalog {
 
   // Convert JSON to Katalog object
   factory Katalog.fromJson(Map<String, dynamic> json) {
-    return Katalog(
-      id: json['id'] ?? 0,
-      nama: json['nama'] ?? '',
-      harga: json['harga']?.toDouble() ?? 0.0,
-      kategori: json['kategori'] ?? 0,
-      deskripsi: json['deskripsi'] ?? '',
-      toko: json['toko'] ?? '',
-    );
-  }
+  return Katalog(
+    id: json['id'] as int? ?? 0, // Default to 0 if null
+    nama: json['nama'] as String? ?? 'Unknown', // Default to 'Unknown' if null
+    kategori: json['kategori'] as int? ?? 0, // Default to 0 if null
+    harga: (json['harga'] as num?)?.toDouble() ?? 0.0, // Convert to double, default to 0.0 if null
+    deskripsi: json['deskripsi'] as String? ?? '', // Default to empty string if null
+    toko: json['toko'] as String? ?? '', // Default to empty string if null
+  );
+}
 
   // Convert Katalog object to JSON
   Map<String, dynamic> toJson() {

@@ -5,7 +5,7 @@ import 'package:has_bogor/widgets/left_drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:has_bogor/screens/authentication/models/katalogs.dart';
+import 'package:has_bogor/screens/penyimpanan/models/katalog_model.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -204,9 +204,10 @@ class _WishlistPageState extends State<WishlistPage> {
                                     onPressed: () {
                           // Konversi WishlistItem ke Katalog untuk CreatePaymentScreen
                           final katalog = Katalog(
+                              id: 0,        // Default id karena tidak ada di WishlistItem
                               nama: item.name,
                               kategori: 1,  // Default kategori karena tidak ada di WishlistItem
-                              harga: "0",   // Default harga karena tidak ada di WishlistItem
+                              harga: 0.0,   // Default harga karena tidak ada di WishlistItem
                               deskripsi: item.desc,
                               toko: "Unknown", // Default toko karena tidak ada di WishlistItem
                           );
