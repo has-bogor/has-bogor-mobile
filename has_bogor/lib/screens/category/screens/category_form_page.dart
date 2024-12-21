@@ -134,6 +134,7 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
                       filled: true,
                       fillColor: Colors.white,
                     ),
+                    style: TextStyle(color: Colors.black),
                     onSaved: (value) {
                       _categoryName = value!.trim();
                     },

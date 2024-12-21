@@ -149,7 +149,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     },
                     child: Text("Add New Category"),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
+                      backgroundColor: Colors.blueAccent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -181,7 +181,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 4,
-                          color: Colors.white,
+                          color: Colors.black,
                           child: ListTile(
                             title: Text(category.namaCategory),
                             subtitle: Text("ID: ${category.id}"),

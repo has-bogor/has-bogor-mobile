@@ -209,6 +209,7 @@ class _WishlistPageState extends State<WishlistPage> {
                               harga: "0",   // Default harga karena tidak ada di WishlistItem
                               deskripsi: item.desc,
                               toko: "Unknown", // Default toko karena tidak ada di WishlistItem
+                              categoryName: "Unknown"
                           );
                           
                           Navigator.push(

@@ -54,7 +54,7 @@ class ProductCard extends StatelessWidget {
             
             // Kategori
             Text(
-              "Kategori ${katalog.kategori}",
+              "Kategori ${katalog.categoryName}",
               style: TextStyle(
                 fontSize: 12,
                 color: Colors.grey[600],

@@ -4,6 +4,7 @@ class Katalog {
   final String harga;
   final String deskripsi;
   final String toko;
+  final String categoryName;
 
   Katalog({
     required this.nama,
@@ -11,6 +12,7 @@ class Katalog {
     required this.harga,
     required this.deskripsi,
     required this.toko,
+    required this.categoryName
   });
 
   factory Katalog.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,8 @@ class Katalog {
       harga: json['harga'] as String,
       deskripsi: json['deskripsi'] as String,
       toko: json['toko'] as String,
+      categoryName: json['category_name'] ?? 'Unknown', // Default category name if not found
+
     );
   }
 
@@ -29,5 +33,6 @@ class Katalog {
     'harga': harga,
     'deskripsi': deskripsi,
     'toko': toko,
+    'categoryName' : categoryName
   };
 }
