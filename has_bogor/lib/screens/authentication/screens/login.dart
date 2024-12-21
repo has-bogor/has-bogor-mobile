@@ -1,5 +1,5 @@
-import 'package:has_bogor/screens/authentication/home.dart';
-import 'package:has_bogor/screens/authentication/register.dart';
+import 'package:has_bogor/screens/authentication/screens/home.dart';
+import 'package:has_bogor/screens/authentication/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
