@@ -5,6 +5,7 @@ import 'promo_model.dart';
 import 'promoForm.dart';
 import 'promo_card.dart';
 import 'dart:convert';
+import 'package:has_bogor/widgets/left_drawer.dart';
 
 class PromoScreen extends StatefulWidget {
   const PromoScreen({Key? key}) : super(key: key);
@@ -16,11 +17,31 @@ class PromoScreen extends StatefulWidget {
 class _PromoScreenState extends State<PromoScreen> {
   List<Promo> _promos = [];
   String _sortBy = "tanpa_filter";
+  bool _isSuperuser = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => _loadPromos(context));
+    _loadInitialData();
+  }
+
+  Future<void> _loadInitialData() async {
+    final request = context.read<CookieRequest>();
+    try {
+      // Load promos
+      await _loadPromos(context);
+      
+      // Check superuser status
+      final response = await request.get(
+        'http://127.0.0.1:8000/promo/check-superuser/'
+      );
+      
+      setState(() {
+        _isSuperuser = response['is_superuser'] ?? false;
+      });
+    } catch (e) {
+      print('Error in _loadInitialData: $e');
+    }
   }
 
   Future<void> _loadPromos(BuildContext context) async {
@@ -60,10 +81,12 @@ class _PromoScreenState extends State<PromoScreen> {
    @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const LeftDrawer(),
       appBar: AppBar(
         title: const Text('Promo'),
+        automaticallyImplyLeading: true,
         actions: [
-          IconButton(
+          if (_isSuperuser) IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
@@ -110,7 +133,8 @@ class _PromoScreenState extends State<PromoScreen> {
             final promo = _promos[index];
             return PromoCard(
               promo: promo,
-              onEdit: () {
+              isSuperuser: _isSuperuser,
+              onEdit: _isSuperuser ? () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -121,10 +145,10 @@ class _PromoScreenState extends State<PromoScreen> {
                     _loadPromos(context);
                   }
                 });
-              },
-              onDelete: () => _deletePromo(context, promo.id!),
-              onAddStore: () => _addStore(context, promo.id!),
-              onRemoveStore: (String storeName) => _removeStore(context, promo.id!, storeName),
+              } : null,
+              onDelete: _isSuperuser ? () => _deletePromo(context, promo.id!) : null,
+              onAddStore: _isSuperuser ? () => _addStore(context, promo.id!) : null,
+              onRemoveStore: _isSuperuser ? (String storeName) => _removeStore(context, promo.id!, storeName) : null,
             );
           },
         ),
