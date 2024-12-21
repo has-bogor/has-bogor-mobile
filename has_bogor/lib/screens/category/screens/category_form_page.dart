@@ -1,8 +1,6 @@
-// lib/screens/category_form_page.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/category.dart';
 
@@ -37,35 +35,54 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
     );
   }
 
-  void submitForm(CookieRequest request) async {
+  void submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      final payload = jsonEncode({'nama_category': _categoryName});
 
       if (widget.isEdit && widget.category != null) {
-        // Update Category using POST (since pbp_django_auth lacks PUT)
-        final response = await request.postJson(
-          "http://127.0.0.1:8000/category/categories/update/${widget.category!.id}/",
-          jsonEncode({'nama_category': _categoryName}),
+        final url = "http://127.0.0.1:8000/category/categories/update/${widget.category!.id}/";
+        final response = await http.put(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer YOUR_TOKEN',
+          },
+          body: payload,
         );
 
-        if (response['success']) {
-          showSnackBarMessage(response['message']);
-          Navigator.pop(context);
+        if (response.statusCode == 200) {
+          final responseData = json.decode(response.body);
+          if (responseData['success']) {
+            showSnackBarMessage(responseData['message']);
+            Navigator.pop(context);
+          } else {
+            showSnackBarMessage(responseData['message'] ?? "Error updating category", color: Colors.red);
+          }
         } else {
-          showSnackBarMessage(response['message'] ?? "Error updating category", color: Colors.red);
+          showSnackBarMessage("Error updating category, status code: ${response.statusCode}", color: Colors.red);
         }
       } else {
-        // Create Category
-        final response = await request.postJson(
-          "http://127.0.0.1:8000/category/categories/create/",
-          jsonEncode({'nama_category': _categoryName}),
+        final url = "http://127.0.0.1:8000/category/categories/create/";
+        final response = await http.post(
+          Uri.parse(url),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer YOUR_TOKEN',
+          },
+          body: payload,
         );
 
-        if (response['success']) {
-          showSnackBarMessage(response['message']);
-          Navigator.pop(context);
+        if (response.statusCode == 201) {
+          final responseData = json.decode(response.body);
+          if (responseData['success']) {
+            showSnackBarMessage(responseData['message']);
+            Navigator.pop(context);
+          } else {
+            showSnackBarMessage(responseData['message'] ?? "Error creating category", color: Colors.red);
+          }
         } else {
-          showSnackBarMessage(response['message'] ?? "Error creating category", color: Colors.red);
+          showSnackBarMessage("Error creating category, status code: ${response.statusCode}", color: Colors.red);
         }
       }
     }
@@ -73,43 +90,83 @@ class _CategoryFormPageState extends State<CategoryFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.isEdit ? 'Edit Category' : 'Add Category'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: _categoryName,
-                decoration: InputDecoration(
-                  labelText: 'Category Name',
-                  border: OutlineInputBorder(),
-                ),
-                onSaved: (value) {
-                  _categoryName = value!.trim();
-                },
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Category name is required';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => submitForm(request),
-                child: Text(widget.isEdit ? 'Update' : 'Add'),
-              ),
-            ],
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(widget.isEdit ? 'Edit Category' : 'Add Category'),
+      backgroundColor: Color(0xff004F8C),  // Set the AppBar color
+    ),
+    body: SingleChildScrollView(
+      child: Container(
+        height: MediaQuery.of(context).size.height, // Ensure full screen height
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xff1D1E3C), Color(0xff004F8C)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
         ),
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // Title Text
+            Text(
+              widget.isEdit ? 'Edit Category' : 'Add Category',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Form Fields
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: _categoryName,
+                    decoration: InputDecoration(
+                      labelText: 'Category Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    onSaved: (value) {
+                      _categoryName = value!.trim();
+                    },
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Category name is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+
+                  // Submit Button
+                  ElevatedButton(
+                    onPressed: submitForm,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff004F8C),  // Set button color
+                      padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 40.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      widget.isEdit ? 'Update Category' : 'Add Category',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-}
+    ),
+  );
+}}
