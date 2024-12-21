@@ -1,51 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:has_bogor/screens/pembayaran/services/services.dart';
+import 'package:has_bogor/screens/pembayaran/services/services.dart' as payment_service;
+import 'package:has_bogor/screens/pembayaran/models/models.dart';
 
 class PaymentController with ChangeNotifier {
   bool _isLoading = false;
   String _paymentStatus = '';
-  final double _totalAmount = 0.0;
+  List<Payment> _payments = [];
 
   bool get isLoading => _isLoading;
   String get paymentStatus => _paymentStatus;
-  double get totalAmount => _totalAmount;
+  List<Payment> get payments => _payments;
 
-  final PaymentService paymentService = PaymentService();
+  final payment_service.PaymentService paymentService = payment_service.PaymentService();
 
-  // Fungsi untuk membuat pembayaran
   Future<void> createPayment(double amount, String paymentMethod) async {
     _isLoading = true;
-    notifyListeners();  // Notifikasi perubahan state ke UI
+    notifyListeners();
     try {
       bool success = await paymentService.createPayment(amount, paymentMethod);
-
-      if (success) {
-        _paymentStatus = 'Pembayaran Berhasil';
-      } else {
-        _paymentStatus = 'Pembayaran Gagal';
-      }
+      _paymentStatus = success ? 'Pembayaran Berhasil' : 'Pembayaran Gagal';
     } catch (e) {
-      _paymentStatus = 'Terjadi kesalahan';
+      _paymentStatus = 'Terjadi kesalahan: $e';
     } finally {
       _isLoading = false;
-      notifyListeners();  // Notifikasi perubahan state ke UI
+      notifyListeners();
     }
   }
 
-  // Fungsi untuk menghapus pembayaran
   Future<void> deletePayment(String paymentId) async {
     _isLoading = true;
     notifyListeners();
     try {
       bool success = await paymentService.deletePayment(paymentId);
-
-      if (success) {
-        _paymentStatus = 'Pembayaran dihapus';
-      } else {
-        _paymentStatus = 'Gagal menghapus pembayaran';
-      }
+      _paymentStatus = success ? 'Pembayaran dihapus' : 'Gagal menghapus pembayaran';
     } catch (e) {
-      _paymentStatus = 'Terjadi kesalahan';
+      _paymentStatus = 'Terjadi kesalahan: $e';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchPayments() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      List<Map<String, dynamic>> paymentMaps = await paymentService.getPayments();
+      _payments = paymentMaps.map((map) => Payment.fromJson(map)).toList();
+    } catch (e) {
+      _paymentStatus = 'Gagal mengambil riwayat pembayaran: $e';
     } finally {
       _isLoading = false;
       notifyListeners();

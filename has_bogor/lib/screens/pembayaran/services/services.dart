@@ -1,11 +1,30 @@
-import 'dart:convert'; // Untuk parsing data JSON
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class PaymentService {
-  // URL API pembayaran
-  final String apiUrl = 'https://api.example.com/payments'; // Ganti dengan URL API asli
+  final String apiUrl = 'http://127.0.0.1:8000/pembayaran/api/history/';
 
-  // Fungsi untuk membuat pembayaran
+  Future<List<Map<String, dynamic>>> getPayments() async {
+    try {
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        return data.cast<Map<String, dynamic>>();
+      } else {
+        throw Exception('Failed to load payments. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching payments: $e');
+    }
+  }
+
   Future<bool> createPayment(double amount, String paymentMethod) async {
     try {
       final response = await http.post(
@@ -17,20 +36,12 @@ class PaymentService {
         }),
       );
 
-      if (response.statusCode == 200) {
-        // Jika status code 200, pembayaran berhasil
-        return true;
-      } else {
-        // Jika status code bukan 200, pembayaran gagal
-        return false;
-      }
+      return response.statusCode == 200;
     } catch (e) {
-      print('Error: $e');
-      return false;
+      throw Exception('Error creating payment: $e');
     }
   }
 
-  // Fungsi untuk menghapus pembayaran
   Future<bool> deletePayment(String paymentId) async {
     try {
       final response = await http.delete(
@@ -38,16 +49,9 @@ class PaymentService {
         headers: {'Content-Type': 'application/json'},
       );
 
-      if (response.statusCode == 200) {
-        // Jika status code 200, penghapusan berhasil
-        return true;
-      } else {
-        // Jika status code bukan 200, penghapusan gagal
-        return false;
-      }
+      return response.statusCode == 200;
     } catch (e) {
-      print('Error: $e');
-      return false;
+      throw Exception('Error deleting payment: $e');
     }
   }
 }

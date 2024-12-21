@@ -3,9 +3,11 @@ import 'package:has_bogor/screens/pembayaran/screens/update_payment.dart';
 import 'package:has_bogor/screens/pembayaran/widgets/payment_form.dart';
 import 'package:has_bogor/screens/pembayaran/widgets/payment_method_dropdown.dart';
 import 'package:has_bogor/screens/authentication/models/katalogs.dart'; 
+import 'package:has_bogor/screens/pembayaran/models/models.dart'; // Import model katalog
 
 class CreatePaymentScreen extends StatefulWidget {
   final Katalog katalog; // Tambah parameter katalog
+
 
   const CreatePaymentScreen({
     super.key, 
@@ -161,10 +163,11 @@ class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => UpdatePaymentScreen(
-                                paymentId: DateTime.now().millisecondsSinceEpoch.toString(), // Generate unique ID
+                                productName: widget.katalog.nama,
                                 totalPayment: totalAmount,
                                 paymentMethod: selectedPaymentMethod!,
                                 status: 'Pending',
+                                amount: totalAmount, // Add the required amount parameter
                               ),
                             ),
                           );

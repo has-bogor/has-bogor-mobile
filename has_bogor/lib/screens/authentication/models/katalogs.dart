@@ -6,6 +6,7 @@ class Katalog {
   final String toko;
 
   Katalog({
+
     required this.nama,
     required this.kategori,
     required this.harga,

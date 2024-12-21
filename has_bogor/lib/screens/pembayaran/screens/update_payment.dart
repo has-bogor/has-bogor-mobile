@@ -1,29 +1,32 @@
 import 'package:flutter/material.dart';
 
 class UpdatePaymentScreen extends StatelessWidget {
-  final String paymentId;
+  final String productName;
   final double totalPayment;
   final String paymentMethod;
   final String status;
+  final double amount;
 
+  // Menerima parameter dari CreatePaymentScreen
   UpdatePaymentScreen({
-    required this.paymentId,
+    required this.productName,
     required this.totalPayment,
     required this.paymentMethod,
     required this.status,
+    required this.amount,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Detail Pembayaran"),
+        title: const Text("Detail Pembayaran"),
         backgroundColor: Colors.indigo[900],
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xff1D1E3C), Color(0xff004F8C)], // Gradient warna
+            colors: [Color(0xff1D1E3C), Color(0xff004F8C)], 
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -34,9 +37,9 @@ class UpdatePaymentScreen extends StatelessWidget {
               // Background Image with opacity
               Positioned.fill(
                 child: Image.asset(
-                  'assets/images/update.jpg',  // Pastikan gambar ada di folder 'assets/image'
+                  'assets/images/update.jpg', 
                   fit: BoxFit.cover,
-                  opacity: AlwaysStoppedAnimation(1),  // Set opacity to give a blur effect
+                  opacity: AlwaysStoppedAnimation(0.5),  // Set opacity for a blur effect
                 ),
               ),
               // Container for Payment Details
@@ -44,7 +47,7 @@ class UpdatePaymentScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.7),
                       borderRadius: BorderRadius.circular(15),
@@ -57,11 +60,11 @@ class UpdatePaymentScreen extends StatelessWidget {
                       ],
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center, // Center align the column
-                      crossAxisAlignment: CrossAxisAlignment.center, // Center align the children
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Title
-                        Text(
+                        const Text(
                           'Detail Pembayaran',
                           style: TextStyle(
                             fontSize: 22,
@@ -70,29 +73,30 @@ class UpdatePaymentScreen extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         // Payment Information
+                        const SizedBox(height: 8),
                         Text(
-                          'ID Pembayaran: $paymentId',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          'Product yang dibeli: $productName',  
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Total Pembayaran: Rp ${totalPayment.toString()}',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          'Total Pembayaran: Rp ${totalPayment.toStringAsFixed(2)}',  // Total pembayaran dari CreatePaymentScreen
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Metode Pembayaran: $paymentMethod',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          'Metode Pembayaran: $paymentMethod',  // Metode pembayaran dari CreatePaymentScreen
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Status Pembayaran: $status',
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          'Status Pembayaran: $status',  // Status pembayaran dari CreatePaymentScreen
+                          style: const TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        SizedBox(height: 30),
+                        const SizedBox(height: 30),
 
                         // Action Buttons
                         Row(
@@ -100,7 +104,6 @@ class UpdatePaymentScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                // Navigate to Payment History
                                 Navigator.pushNamed(context, '/payment-history');
                               },
                               style: ElevatedButton.styleFrom(
@@ -108,17 +111,16 @@ class UpdatePaymentScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'Riwayat Pembayaran',
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             ElevatedButton(
                               onPressed: () {
-                                // Navigate to Create Payment screen
                                 Navigator.pushNamed(context, '/create-payment');
                               },
                               style: ElevatedButton.styleFrom(
@@ -126,9 +128,9 @@ class UpdatePaymentScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'Buat Pembayaran Baru',
                                 style: TextStyle(color: Colors.white),
                               ),

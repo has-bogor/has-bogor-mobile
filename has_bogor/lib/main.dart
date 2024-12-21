@@ -1,14 +1,25 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:has_bogor/screens/authentication/screens/guestpage.dart';
 import 'package:provider/provider.dart';
+import 'package:has_bogor/screens/authentication/screens/guestpage.dart';
 import 'package:has_bogor/screens/authentication/screens/login.dart';
 import 'package:has_bogor/screens/authentication/screens/home.dart';
 import 'package:has_bogor/screens/authentication/screens/register.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:has_bogor/screens/pembayaran/screens/payment_history.dart';
 import 'package:has_bogor/screens/penyimpanan/screens/katalog_screen.dart';
+import 'package:has_bogor/screens/pembayaran/services/payment_controller.dart';
+
+class CustomHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = CustomHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -17,31 +28,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) {
-        CookieRequest request = CookieRequest();
-        return request;
-      },
+    return MultiProvider(
+      providers: [
+        Provider(
+          create: (_) {
+            CookieRequest request = CookieRequest();
+            return request;
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PaymentController(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Has Bogor',
         theme: ThemeData(
           useMaterial3: true,
-          // Update color scheme untuk tema yang lebih konsisten
           colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.indigo,
             primary: Colors.indigo[900]!,
             secondary: const Color(0xff1D1E3C),
             background: const Color(0xff004F8C),
-            // Tambahkan warna untuk dark mode
             brightness: Brightness.dark,
           ),
-          // Kustomisasi tema untuk komponen-komponen umum
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.indigo[900],
             foregroundColor: Colors.white,
             elevation: 0,
           ),
-          // Kustomisasi card theme
           cardTheme: CardTheme(
             color: Colors.black.withOpacity(0.7),
             elevation: 4,
@@ -49,7 +63,6 @@ class MyApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          // Kustomisasi elevated button theme
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.indigo[900],
@@ -63,7 +76,6 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          // Text theme untuk konsistensi typography
           textTheme: const TextTheme(
             titleLarge: TextStyle(
               fontSize: 24,
@@ -85,7 +97,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        // Routes untuk navigasi
         initialRoute: '/',
         routes: {
           '/': (context) => const WelcomePage(),
@@ -95,7 +106,6 @@ class MyApp extends StatelessWidget {
           '/payment-history': (context) => const PaymentHistoryScreen(),
           '/katalog': (context) => const KatalogScreen(),
         },
-        // Error handling untuk routes yang tidak ditemukan
         onUnknownRoute: (settings) {
           return MaterialPageRoute(
             builder: (context) => Scaffold(
