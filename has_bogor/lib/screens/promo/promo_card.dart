@@ -3,18 +3,20 @@ import 'package:has_bogor/screens/promo/promo_model.dart';
 
 class PromoCard extends StatelessWidget {
   final Promo promo;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
-  final VoidCallback onAddStore;
-  final Function(String) onRemoveStore;
+  final bool isSuperuser;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+  final VoidCallback? onAddStore;
+  final Function(String)? onRemoveStore;
 
   const PromoCard({
     Key? key,
     required this.promo,
-    required this.onEdit,
-    required this.onDelete,
-    required this.onAddStore,
-    required this.onRemoveStore,
+    required this.isSuperuser,
+    this.onEdit,
+    this.onDelete,
+    this.onAddStore,
+    this.onRemoveStore,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,7 @@ class PromoCard extends StatelessWidget {
                 Text('Minimal Transaksi: Rp${promo.minimalTransaksi.toStringAsFixed(0)}'),
               ],
             ),
-            trailing: Row(
+            trailing: isSuperuser ? Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
@@ -46,7 +48,7 @@ class PromoCard extends StatelessWidget {
                   onPressed: onDelete,
                 ),
               ],
-            ),
+            ) : null,
           ),
           if (promo.tokoTerkait.isNotEmpty) ...[
             Padding(
@@ -60,16 +62,16 @@ class PromoCard extends StatelessWidget {
                   ),
                   ...promo.tokoTerkait.map((store) => ListTile(
                     title: Text(store['name'] ?? ''),
-                    trailing: IconButton(
+                    trailing: isSuperuser ? IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () => onRemoveStore(store['name']),
-                    ),
+                      onPressed: () => onRemoveStore?.call(store['name']),
+                    ) : null,
                   )),
                 ],
               ),
             ),
           ],
-          Padding(
+          if (isSuperuser) Padding(
             padding: EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               onPressed: onAddStore,
